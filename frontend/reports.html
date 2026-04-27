@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Reports — Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div id="toast-container"></div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon">💸</div><div><div class="brand-name">ExpenseTracker</div><div class="brand-sub">Finance Manager</div></div></div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"    class="nav-link">📊 Dashboard</a>
+      <a href="transactions.html" class="nav-link">💳 Transactions</a>
+      <a href="budget.html"       class="nav-link">🎯 Budget</a>
+      <a href="reports.html"      class="nav-link active">📈 Reports</a>
+      <a href="profile.html"      class="nav-link">👤 Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip"><div class="user-avatar" id="user-avatar">D</div></div>
+      <button class="btn btn-outline btn-sm w-full mt-2" id="logout-btn" style="justify-content:center">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div><h2 class="page-title">Reports</h2><p class="page-sub">Annual financial overview</p></div>
+      <div class="flex gap-2">
+        <button class="btn btn-outline btn-sm" id="theme-toggle">🌙</button>
+        <select class="form-control" id="year-select" style="width:auto">
+          <option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option>
+        </select>
+        <button class="btn btn-outline btn-sm" id="export-btn">⬇ Export CSV</button>
+      </div>
+    </div>
+
+    <div class="stats-grid mb-4">
+      <div class="stat-card"><div class="stat-label">Total Income</div><div class="stat-value text-success" id="total-income">—</div></div>
+      <div class="stat-card"><div class="stat-label">Total Expenses</div><div class="stat-value text-danger" id="total-expense">—</div></div>
+      <div class="stat-card"><div class="stat-label">Net Savings</div><div class="stat-value text-primary" id="total-savings">—</div></div>
+    </div>
+
+    <div class="card mb-4">
+      <h3 style="font-size:.9rem;font-weight:700;margin-bottom:1rem">Monthly Overview</h3>
+      <canvas id="report-chart" height="120"></canvas>
+    </div>
+
+    <div class="card table-wrap">
+      <h3 style="font-size:.9rem;font-weight:700;margin-bottom:1rem">Monthly Summary Table</h3>
+      <table>
+        <thead><tr><th>Month</th><th>Income</th><th>Expenses</th><th>Balance</th><th>Savings %</th></tr></thead>
+        <tbody id="monthly-table"><tr><td colspan="5"><div class="spinner"></div></td></tr></tbody>
+      </table>
+    </div>
+
+    <footer class="app-footer">Developed by <strong>Dharmik Siddhpura</strong> | MCA Student | <a href="https://github.com/dharmik-siddhpura" target="_blank">GitHub</a> | <a href="https://www.linkedin.com/in/dharmik-siddhpura/" target="_blank">LinkedIn</a></footer>
+  </main>
+</div>
+<script type="module" src="js/reports.js"></script>
+</body>
+</html>

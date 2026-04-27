@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Transactions — Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<div id="toast-container"></div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon">💸</div><div><div class="brand-name">ExpenseTracker</div><div class="brand-sub">Finance Manager</div></div></div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"    class="nav-link">📊 Dashboard</a>
+      <a href="transactions.html" class="nav-link active">💳 Transactions</a>
+      <a href="budget.html"       class="nav-link">🎯 Budget</a>
+      <a href="reports.html"      class="nav-link">📈 Reports</a>
+      <a href="profile.html"      class="nav-link">👤 Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip"><div class="user-avatar" id="user-avatar">D</div></div>
+      <button class="btn btn-outline btn-sm w-full mt-2" id="logout-btn" style="justify-content:center">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div><h2 class="page-title">Transactions</h2><p class="page-sub" id="txn-count">Loading...</p></div>
+      <div class="flex gap-2">
+        <button class="btn btn-outline btn-sm" id="theme-toggle">🌙</button>
+        <button class="btn btn-outline btn-sm" id="export-btn">⬇ Export CSV</button>
+        <button class="btn btn-primary" id="add-btn">+ Add</button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4" style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center">
+      <div class="form-group" style="flex:1;min-width:140px">
+        <label>Type</label>
+        <select class="form-control" id="filter-type">
+          <option value="">All Types</option>
+          <option value="INCOME">Income</option>
+          <option value="EXPENSE">Expense</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex:1;min-width:120px">
+        <label>Month</label>
+        <select class="form-control" id="filter-month">
+          <option value="">All Months</option>
+          <option value="1">January</option><option value="2">February</option><option value="3">March</option>
+          <option value="4">April</option><option value="5">May</option><option value="6">June</option>
+          <option value="7">July</option><option value="8">August</option><option value="9">September</option>
+          <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex:1;min-width:100px">
+        <label>Year</label>
+        <select class="form-control" id="filter-year">
+          <option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card table-wrap">
+      <table>
+        <thead><tr><th>Title</th><th>Type</th><th>Category</th><th>Amount</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody id="table-body"><tr><td colspan="6"><div class="spinner"></div></td></tr></tbody>
+      </table>
+    </div>
+
+    <footer class="app-footer">Developed by <strong>Dharmik Siddhpura</strong> | MCA Student | <a href="https://github.com/dharmik-siddhpura" target="_blank">GitHub</a> | <a href="https://www.linkedin.com/in/dharmik-siddhpura/" target="_blank">LinkedIn</a></footer>
+  </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay hidden" id="txn-modal">
+  <div class="modal-box">
+    <div class="modal-header"><h3 id="modal-title">Add Transaction</h3><button class="modal-close" id="modal-close">✕</button></div>
+    <form id="txn-form" style="display:flex;flex-direction:column;gap:.9rem">
+      <div class="grid-2">
+        <div class="form-group"><label>Type</label>
+          <select class="form-control" name="type"><option value="EXPENSE">Expense</option><option value="INCOME">Income</option></select></div>
+        <div class="form-group"><label>Category</label>
+          <select class="form-control" name="category">
+            <option>Food</option><option>Transport</option><option>Entertainment</option>
+            <option>Shopping</option><option>Health</option><option>Bills</option>
+            <option>Education</option><option>Salary</option><option>Freelance</option><option>Other</option>
+          </select></div>
+      </div>
+      <div class="form-group"><label>Title</label><input class="form-control" name="title" required placeholder="e.g. Lunch"/></div>
+      <div class="grid-2">
+        <div class="form-group"><label>Amount</label><input class="form-control" type="number" name="amount" min="1" required/></div>
+        <div class="form-group"><label>Date</label><input class="form-control" type="date" name="txnDate" required/></div>
+      </div>
+      <div class="form-group"><label>Notes</label><input class="form-control" name="notes" placeholder="Optional..."/></div>
+      <button type="submit" class="btn btn-primary" style="justify-content:center">Save</button>
+    </form>
+  </div>
+</div>
+<script>document.querySelector('[name=txnDate]').valueAsDate = new Date();</script>
+<script type="module" src="js/transactions.js"></script>
+</body>
+</html>

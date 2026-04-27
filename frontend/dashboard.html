@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Dashboard — Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div id="toast-container"></div>
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">💸</div>
+      <div><div class="brand-name">ExpenseTracker</div><div class="brand-sub">Finance Manager</div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"    class="nav-link active">📊 Dashboard</a>
+      <a href="transactions.html" class="nav-link">💳 Transactions</a>
+      <a href="budget.html"       class="nav-link">🎯 Budget</a>
+      <a href="reports.html"      class="nav-link">📈 Reports</a>
+      <a href="profile.html"      class="nav-link">👤 Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="user-avatar">D</div>
+        <div><div class="user-name" id="user-name">Loading...</div></div>
+      </div>
+      <button class="btn btn-outline btn-sm w-full mt-2" id="logout-btn" style="justify-content:center">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h2 class="page-title" id="greeting">Dashboard</h2>
+        <p class="page-sub">Your financial overview for this month</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-outline btn-sm" id="theme-toggle">🌙 Theme</button>
+        <button class="btn btn-primary" id="add-txn-btn">+ Add Transaction</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid mb-4">
+      <div class="stat-card">
+        <div class="stat-header"><span class="stat-label">Total Income</span><div class="stat-icon bg-success-soft">💰</div></div>
+        <div class="stat-value text-success" id="stat-income">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header"><span class="stat-label">Total Expenses</span><div class="stat-icon bg-danger-soft">💸</div></div>
+        <div class="stat-value text-danger" id="stat-expense">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header"><span class="stat-label">Net Balance</span><div class="stat-icon bg-primary-soft">🏦</div></div>
+        <div class="stat-value text-primary" id="stat-balance">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header"><span class="stat-label">Savings Rate</span><div class="stat-icon bg-warning-soft">📊</div></div>
+        <div class="stat-value text-warning" id="stat-savings">—</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid mb-4" style="display:grid;grid-template-columns:3fr 2fr;gap:1rem">
+      <div class="card">
+        <h3 style="font-size:.9rem;font-weight:700;margin-bottom:1rem">Monthly Income vs Expenses</h3>
+        <canvas id="bar-chart" height="200"></canvas>
+      </div>
+      <div class="card">
+        <h3 style="font-size:.9rem;font-weight:700;margin-bottom:1rem">Spending by Category</h3>
+        <canvas id="donut-chart" height="200"></canvas>
+      </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="card">
+      <div class="flex justify-between items-center mb-3">
+        <h3 style="font-size:.9rem;font-weight:700">Recent Transactions</h3>
+        <a href="transactions.html" class="btn btn-outline btn-sm">View All</a>
+      </div>
+      <div id="recent-list"><div class="spinner"></div></div>
+    </div>
+
+    <footer class="app-footer">
+      Developed by <strong>Dharmik Siddhpura</strong> | MCA Student |
+      <a href="https://github.com/dharmik-siddhpura" target="_blank">GitHub</a> |
+      <a href="https://www.linkedin.com/in/dharmik-siddhpura/" target="_blank">LinkedIn</a>
+    </footer>
+  </main>
+</div>
+
+<!-- Add Transaction Modal -->
+<div class="modal-overlay hidden" id="add-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Add Transaction</h3>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <form id="add-txn-form" style="display:flex;flex-direction:column;gap:.9rem">
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Type</label>
+          <select class="form-control" name="type">
+            <option value="EXPENSE">Expense</option>
+            <option value="INCOME">Income</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select class="form-control" name="category">
+            <option>Food</option><option>Transport</option><option>Entertainment</option>
+            <option>Shopping</option><option>Health</option><option>Bills</option>
+            <option>Education</option><option>Salary</option><option>Freelance</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Title</label>
+        <input class="form-control" name="title" placeholder="e.g. Lunch at restaurant" required/>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Amount (₹)</label>
+          <input class="form-control" type="number" name="amount" min="1" placeholder="0" required/>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input class="form-control" type="date" name="txnDate" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Notes (optional)</label>
+        <input class="form-control" name="notes" placeholder="Any notes..."/>
+      </div>
+      <button type="submit" class="btn btn-primary" style="justify-content:center">Add Transaction</button>
+    </form>
+  </div>
+</div>
+
+<script>document.querySelector('[name=txnDate]').valueAsDate = new Date();</script>
+<script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

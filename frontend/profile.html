@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Profile — Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<div id="toast-container"></div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><div class="brand-icon">💸</div><div><div class="brand-name">ExpenseTracker</div><div class="brand-sub">Finance Manager</div></div></div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"    class="nav-link">📊 Dashboard</a>
+      <a href="transactions.html" class="nav-link">💳 Transactions</a>
+      <a href="budget.html"       class="nav-link">🎯 Budget</a>
+      <a href="reports.html"      class="nav-link">📈 Reports</a>
+      <a href="profile.html"      class="nav-link active">👤 Profile</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip"><div class="user-avatar" id="user-avatar">D</div></div>
+      <button class="btn btn-outline btn-sm w-full mt-2" id="logout-btn" style="justify-content:center">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content" style="max-width:560px">
+    <div class="page-header">
+      <div><h2 class="page-title">Profile & Settings</h2><p class="page-sub">Manage your account</p></div>
+      <button class="btn btn-outline btn-sm" id="theme-toggle">🌙 Theme</button>
+    </div>
+
+    <div class="card mb-4">
+      <h3 style="font-size:.95rem;font-weight:700;margin-bottom:1.25rem">👤 Personal Info</h3>
+      <form id="profile-form" style="display:flex;flex-direction:column;gap:1rem">
+        <div class="form-group"><label>Full Name</label><input class="form-control" name="name" id="pf-name" placeholder="Your name" required/></div>
+        <div class="form-group"><label>Email (read-only)</label><input class="form-control" name="email" id="pf-email" disabled style="opacity:.6"/></div>
+        <div class="form-group"><label>Currency</label>
+          <select class="form-control" name="currency" id="pf-currency">
+            <option value="INR">🇮🇳 INR</option><option value="USD">🇺🇸 USD</option>
+            <option value="EUR">🇪🇺 EUR</option><option value="GBP">🇬🇧 GBP</option>
+          </select></div>
+        <button type="submit" class="btn btn-primary" style="width:fit-content">Save Changes</button>
+      </form>
+    </div>
+
+    <div class="card mb-4">
+      <h3 style="font-size:.95rem;font-weight:700;margin-bottom:.75rem">ℹ️ About This Project</h3>
+      <p style="font-size:.875rem;color:var(--text-muted);line-height:1.7">
+        This Expense Tracker was built using <strong>Spring Boot</strong> for robust REST APIs,
+        <strong>Vanilla JavaScript</strong> to demonstrate core JS skills without framework dependency,
+        and <strong>MySQL</strong> for relational data integrity.
+        JWT-based authentication secures all endpoints.<br/><br/>
+        Built by <strong>Dharmik Siddhpura</strong> | MCA Student | AI Enthusiast
+      </p>
+    </div>
+
+    <footer class="app-footer">Developed by <strong>Dharmik Siddhpura</strong> | MCA Student | <a href="https://github.com/dharmik-siddhpura" target="_blank">GitHub</a> | <a href="https://www.linkedin.com/in/dharmik-siddhpura/" target="_blank">LinkedIn</a></footer>
+  </main>
+</div>
+
+<script type="module">
+  import { guardPage, logout } from './js/auth.js';
+  import { api } from './js/api.js';
+  import { showToast } from './js/utils.js';
+  guardPage();
+
+  if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const h = document.documentElement;
+    h.dataset.theme = h.dataset.theme === 'dark' ? '' : 'dark';
+    localStorage.setItem('theme', h.dataset.theme);
+  });
+  document.getElementById('logout-btn').addEventListener('click', logout);
+
+  const loadProfile = async () => {
+    const res = await api.get('/auth/me');
+    const u = res.data;
+    document.getElementById('pf-name').value = u.name;
+    document.getElementById('pf-email').value = u.email;
+    document.getElementById('pf-currency').value = u.currency;
+    document.getElementById('user-avatar').textContent = u.name.charAt(0).toUpperCase();
+  };
+
+  document.getElementById('profile-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    try {
+      await api.put('/auth/me', { name: f.name.value, currency: f.currency.value });
+      localStorage.setItem('currency', f.currency.value);
+      localStorage.setItem('userName', f.name.value);
+      showToast('Profile updated!', 'success');
+    } catch {}
+  });
+
+  loadProfile();
+</script>
+</body>
+</html>

@@ -1,5 +1,13 @@
-node_modules/
-.env
-dist/
-.DS_Store
+backend/target/
+backend/.mvn/
+*.class
+*.jar
+*.war
 *.log
+.env
+node_modules/
+frontend/dist/
+.DS_Store
+*.iml
+.idea/
+.vscode/
