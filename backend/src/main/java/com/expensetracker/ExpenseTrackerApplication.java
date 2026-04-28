@@ -10,12 +10,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.math.BigDecimal;
+import java.security.Security;
 import java.time.LocalDate;
 
 @SpringBootApplication
 public class ExpenseTrackerApplication {
 
     public static void main(String[] args) {
+        // SQL Server on this machine only supports TLS 1.0; Java 25 disables it by default
+        Security.setProperty("jdk.tls.disabledAlgorithms",
+                "SSLv3, RC4, DES, MD5withRSA, 3DES_EDE_CBC, anon, NULL");
         SpringApplication.run(ExpenseTrackerApplication.class, args);
     }
 

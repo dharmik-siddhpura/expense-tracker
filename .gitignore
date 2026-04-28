@@ -1,4 +1,5 @@
 backend/target/
+application-local.properties
 backend/.mvn/
 *.class
 *.jar
